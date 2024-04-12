@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBytes.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RecipeBytes.Infrastructure.Data;
 namespace RecipeBytes.Infrastructure.Migrations
 {
     [DbContext(typeof(RecipeBytesDbContext))]
-    partial class RecipeBytesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240412235520_moreseeds")]
+    partial class moreseeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

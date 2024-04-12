@@ -3,14 +3,9 @@ using RecipeBytes.Domain.Entities;
 
 namespace RecipeBytes.Infrastructure.Data
 {
-    public class DbInitializer
+    public class DbInitializer(ModelBuilder modelBuilder)
     {
-        private readonly ModelBuilder _modelBuilder;
-
-        public DbInitializer(ModelBuilder modelBuilder)
-        {
-            _modelBuilder = modelBuilder;
-        }
+        private readonly ModelBuilder _modelBuilder = modelBuilder;
 
         public void Seed()
         {
@@ -44,6 +39,16 @@ namespace RecipeBytes.Infrastructure.Data
             //    new InstructionStep { Id = new Guid("4fe36ea2-e5e3-40a0-a7a3-55c40b08bb30"), Name = "", IsSoftDeleted = false, Description = "Put Noodles in", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue });
 
             //_modelBuilder.Entity<Recipe>().HasData(new Recipe { Id = new Guid("082e3d35-95b2-409a-9ba9-c8c9b15a877b"), Name = "Pork noodles", IsSoftDeleted = false, ImageUrl = "this is a url", Description = "Noodles and pork", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue });
+            _modelBuilder.Entity<Recipe>().HasData(new Recipe { Id = new Guid("082e3d35-95b2-409a-9ba9-c8c9b15a877b"), Name = "Ramen noodles", IsSoftDeleted = false, ImageUrl = "https://res.cloudinary.com/daspbl6sb/image/upload/v1712964559/whk9yu5xsbr7cvszwtte.jpg", Description = "Noodles and pork", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue },
+                new Recipe { Id = new Guid("96a6f4e5-e108-4b8f-8c47-1a2c98d6019e"), Name = "Bacon and Eggs", IsSoftDeleted = false, ImageUrl = "https://res.cloudinary.com/daspbl6sb/image/upload/v1712964467/james-kern-aLDW0oQ0NtU-unsplash_ypclxp.jpg", Description = "What I said was, 'give me all the bacon and eggs you have.'", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue },
+                new Recipe { Id = new Guid("739defb6-3d8a-432e-a4e7-0171e22a3a0f"), Name = "Homemade Margherita Pizza", IsSoftDeleted = false, ImageUrl = "https://res.cloudinary.com/daspbl6sb/image/upload/v1712964879/bwglvzxvy9uzdwwglhzb.jpg", Description = "Marg-her-ehhh-tay", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue },
+                new Recipe { Id = new Guid("b8a3efb4-50bd-41b5-832e-3d59d783b4a9"), Name = "Carnitas Tacos", IsSoftDeleted = false, ImageUrl = "https://res.cloudinary.com/daspbl6sb/image/upload/v1712965310/o2qgx0yifaty6ikcpmf1.jpg", Description = "Why did the taco go to the party? Because it wanted to taco 'bout it later!", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue },
+                new Recipe { Id = new Guid("a2c3c1e1-f0ed-4d4d-a698-9f7ee2177d8b"), Name = "Chocolate Cake", IsSoftDeleted = false, ImageUrl = "https://res.cloudinary.com/daspbl6sb/image/upload/v1712965428/hjc02v2ngl00lc0zgxtx.jpg", Description = "It is not a lie.", CreatedDate = DateTimeOffset.MinValue, UpdatedDate = DateTimeOffset.MinValue }
+                );  
+            
+            
+            
+
         }
     }
 }
