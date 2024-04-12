@@ -6,6 +6,11 @@
 
 <h3>RecipeDetails</h3>
 
+@if(_recipe != null)
+{
+    @_recipe.Name;
+}
+
 @code {
     private RecipeViewModel? _recipe { get; set; }
     [Parameter]
