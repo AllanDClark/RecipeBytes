@@ -66,7 +66,7 @@ namespace RecipeBytes.Controllers
         }
 
         // PUT api/<RecipeController>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task Put([FromBody] RecipeViewModel value)
         {
             await _mediator.Send(new UpdateRecipe

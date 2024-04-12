@@ -124,10 +124,20 @@
     {
         var selectedList = selectedIngredients.ToList();
         Model!.Ingredients = allIngredients?.Where(x => selectedList.Contains(x.Id)).Select(x => x.Id).ToList();
-        var request = new RestRequest("/api/recipe", Method.Post);
-        request.AddBody(Model!);
-        await _restClient!.PostAsync(request);
-        Model = new();
+
+        @if(Id == null)
+        {
+            var request = new RestRequest("/api/recipe", Method.Post);
+            request.AddBody(Model!);
+            await _restClient!.PostAsync(request);
+        } else
+        {
+            var request = new RestRequest("/api/recipe", Method.Put);
+            request.AddBody(Model!);
+            await _restClient!.PutAsync(request);
+        }
+
+    Model = new();
         Id = null;
         Navigator.NavigateTo("recipelist");
     }
