@@ -12,7 +12,7 @@ Before running the app, ensure you have the following installed:- [.NET SDK](htt
 
 To run the app locally, follow these steps:
 
-1. Clone this repository to your local machine using Git: ```bash git clone https://github.com/your-username/blazor-webassembly-app.git```
+1. Clone this repository to your local machine using Git
 
 2. Open in Visual Studio.
 
