@@ -10,7 +10,7 @@
 
 
 <div class="container">
-    <input class="form-control" id="filterInput" type="text" placeholder="Search..">
+    <input class="form-control" id="filter-input" type="text" placeholder="Search..">
     <br />
     @if (_recipes == null)
     {
@@ -18,38 +18,28 @@
     }
     else
     {
-        <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Tags</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="recipeTable">
+        <div class="row row-cols-1 row-cols-md-2 g-4" id="recipe-list">
+
             @foreach (var recipe in _recipes)
             {
-                <tr>
-                    <td>@recipe.Name</td>
-                    <td class="table-description">@recipe.Description</td>
-                    <td>
-                        @if(recipe.Tags is not null)
+                <div class="col">
+                    <div class="card h-100">
+                        @if(!string.IsNullOrWhiteSpace(recipe.ImageUrl))
                         {
-                            @foreach(var tag in recipe.Tags)
-                            {
-                                @tag.Name;
-                            }
+                            <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Description">
                         }
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-secondary" @onclick="() => EditRecipe(recipe.Id)">Edit</button>
-                        <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteRecipe(recipe.Id)">Delete</button>
-                    </td>
-                </tr>
+                        <div class="card-body">
+                            <h5 class="card-title">@recipe.Name</h5>
+                            <p class="card-text">@recipe.Description</p>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-outline-secondary" @onclick="() => EditRecipe(recipe.Id)">Edit</button>
+                            <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteRecipe(recipe.Id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        </div>
     }
 </div>
 
