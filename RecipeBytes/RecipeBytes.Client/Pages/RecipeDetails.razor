@@ -1,4 +1,6 @@
-﻿@page "/recipedetails"
+﻿@page "/recipedetails/{Id:guid}"
+
+@inject NavigationManager Navigator
 
 @using RecipeBytes.Client.ViewModels
 
@@ -6,11 +8,17 @@
 
 @code {
     private RecipeViewModel? _recipe { get; set; }
+    [Parameter]
+    public Guid Id { get; set; }
+
+
+    private RestClient? _restClient { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
+        _restClient = new RestClient(Navigator.BaseUri);
+        var existingRecipeRequest = new RestRequest($"/api/recipe/{Id}");
+        _recipe = await _restClient.GetAsync<RecipeViewModel>(existingRecipeRequest);
 
     }
 }
