@@ -1,0 +1,16 @@
+﻿@page "/recipedetails"
+
+@using RecipeBytes.Client.ViewModels
+
+<h3>RecipeDetails</h3>
+
+@code {
+    private RecipeViewModel? _recipe { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+        await Task.Delay(500);
+
+    }
+}

@@ -1,0 +1,79 @@
+﻿@page "/recipelist"
+@inject NavigationManager Navigator
+
+@rendermode InteractiveWebAssembly
+
+@using RecipeBytes.Client.ViewModels
+@using RestSharp
+
+<h3>RecipeList</h3>
+
+
+<div class="container">
+    <input class="form-control" id="filterInput" type="text" placeholder="Search..">
+    <br />
+    @if (_recipes == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Tags</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="recipeTable">
+            @foreach (var recipe in _recipes)
+            {
+                <tr>
+                    <td>@recipe.Name</td>
+                    <td class="table-description">@recipe.Description</td>
+                    <td>
+                        @if(recipe.Tags is not null)
+                        {
+                            @foreach(var tag in recipe.Tags)
+                            {
+                                @tag.Name;
+                            }
+                        }
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-secondary" @onclick="() => EditRecipe(recipe.Id)">Edit</button>
+                        <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteRecipe(recipe.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+</div>
+
+
+
+@code {
+
+    private List<RecipeViewModel>? _recipes { get; set; }
+    private RestClient? _restClient { get; set; } 
+
+    protected override async Task OnInitializedAsync()
+    {
+        _restClient = new RestClient(Navigator.BaseUri);
+        var request = new RestRequest("/api/recipe");
+        _recipes = await _restClient.GetAsync<List<RecipeViewModel>>(request);
+    }
+    public void EditRecipe(Guid id)
+    {
+        Navigator.NavigateTo($"/editrecipe/{id}");
+    }
+    public async Task DeleteRecipe(Guid id)
+    {
+        var deleteRequest = new RestRequest($"/api/recipe/{id}", Method.Delete);
+        await _restClient!.DeleteAsync(deleteRequest);
+        _recipes!.Remove(_recipes.Find(x => x.Id == id)!);
+    }
+}
