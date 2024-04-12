@@ -9,7 +9,9 @@
 <h3>Create A New Recipe</h3>
 <div class="card">
     <div class="card-body">
-        <EditForm Model="Model" OnSubmit="Submit">
+        <EditForm Model="Model" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
+            <ValidationSummary Model="Model" />
             <div class="row">
                 <div class="col">
                     <label class="form-label">@nameof(Model.Name)</label>
