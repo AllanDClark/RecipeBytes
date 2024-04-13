@@ -1,4 +1,6 @@
-# Blazor WebAssembly App
+# Recipe Bytes
+
+### Blazor WebAssembly App
 
 This repository contains a simple Blazor WebAssembly app that you can run locally.
 
