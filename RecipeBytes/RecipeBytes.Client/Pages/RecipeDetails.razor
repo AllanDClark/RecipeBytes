@@ -1,20 +1,42 @@
 ﻿@page "/recipedetails/{Id:guid}"
 
 @inject NavigationManager Navigator
+@rendermode InteractiveWebAssembly
 
 @using RecipeBytes.Client.ViewModels
 
-<h3>RecipeDetails</h3>
+<h3>Recipe Details</h3>
 
-@if(_recipe != null)
+@if (_recipe != null)
 {
-    @_recipe.Name;
+    <h5>@_recipe.Name</h5>
+
+    <p>@_recipe.Description</p>
+
+    <img src="@_recipe.ImageUrl" />
+
+    <ul>
+        @foreach (var ingredient in _recipe.Ingredients!)
+        {
+            var vm = allIngredients!.First(x => x.Id == ingredient);
+
+            <li class="list-group-item">@vm.Name</li>
+        }
+    </ul>
+
+    <ol class="list-group list-group-numbered">
+        @foreach (var instruction in _recipe.InstructionSteps)
+        {
+            <li class="list-group-item">@instruction</li>
+        }
+    </ol>
 }
 
 @code {
     private RecipeViewModel? _recipe { get; set; }
     [Parameter]
     public Guid Id { get; set; }
+    private List<IngredientViewModel>? allIngredients { get; set; }
 
 
     private RestClient? _restClient { get; set; }
@@ -25,5 +47,10 @@
         var existingRecipeRequest = new RestRequest($"/api/recipe/{Id}");
         _recipe = await _restClient.GetAsync<RecipeViewModel>(existingRecipeRequest);
 
+        var request = new RestRequest("/api/ingredient");
+
+        var response = await _restClient.GetAsync<List<IngredientViewModel>>(request);
+        allIngredients = response;
     }
 }
+

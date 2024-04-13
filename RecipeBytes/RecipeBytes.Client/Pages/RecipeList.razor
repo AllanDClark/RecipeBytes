@@ -6,7 +6,7 @@
 @using RecipeBytes.Client.ViewModels
 @using RestSharp
 
-<h3>RecipeList</h3>
+<h3>Recipe List</h3>
 
 
 <div class="container">
@@ -24,7 +24,7 @@
             {
                 <div class="col">
                     <div class="card h-100">
-                        @if(!string.IsNullOrWhiteSpace(recipe.ImageUrl))
+                        @if (!string.IsNullOrWhiteSpace(recipe.ImageUrl))
                         {
                             <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Description">
                         }
@@ -32,11 +32,12 @@
                             <h5 class="card-title">@recipe.Name</h5>
                             <p class="card-text">@recipe.Description</p>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer" style="z-index: 2;">
                             <button type="button" class="btn btn-outline-primary" @onclick="() => DetailsRecipe(recipe.Id)">Details</button>
                             <button type="button" class="btn btn-outline-secondary" @onclick="() => EditRecipe(recipe.Id)">Edit</button>
                             <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteRecipe(recipe.Id)">Delete</button>
                         </div>
+                        <a class="stretched-link" @onclick="() => DetailsRecipe(recipe.Id)"></a>
                     </div>
                 </div>
             }
@@ -49,7 +50,7 @@
 @code {
 
     private List<RecipeViewModel>? _recipes { get; set; }
-    private RestClient? _restClient { get; set; } 
+    private RestClient? _restClient { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
