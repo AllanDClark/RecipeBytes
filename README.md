@@ -1,4 +1,6 @@
-# Blazor WebAssembly App
+# Recipe Bytes
+
+### Blazor WebAssembly App
 
 This repository contains a simple Blazor WebAssembly app that you can run locally.
 
@@ -16,7 +18,7 @@ To run the app locally, follow these steps:
 
 2. Open in Visual Studio.
 
-3. Open Package Manager Console and run the command `update-database`
+3. Open Package Manager Console, change the Default Project to RecipeBytes.Infrastructure and run the command `update-database`
 
 4. Ensure RecipeBytes is selected as the startup project and hit the run button.
 
