@@ -67,7 +67,8 @@
                 <ol class="list-group list-group-numbered">
                     @foreach (var instruction in Model.InstructionSteps)
                     {
-                        <li class="list-group-item">@instruction</li>
+                        <li class="list-group-item">@instruction<button type="button" class="btn btn-sm btn-outline-danger float-end" onclick="@(() => RemoveStep(instruction))">-</button></li>
+                        
                     }
                 </ol>
             </div>
@@ -123,6 +124,12 @@
     public void DeSelectIngredient(Guid id)
     {
         selectedIngredients.Remove(id);
+    }
+
+    public void RemoveStep(string instruction)
+    {
+        Model.InstructionSteps.Remove(instruction);
+        StateHasChanged();
     }
 
 
