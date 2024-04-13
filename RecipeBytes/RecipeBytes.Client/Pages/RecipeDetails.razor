@@ -1,36 +1,58 @@
 ﻿@page "/recipedetails/{Id:guid}"
 
 @inject NavigationManager Navigator
-@rendermode InteractiveWebAssembly
 
 @using RecipeBytes.Client.ViewModels
 
-<h3>Recipe Details</h3>
+<div class="container-md">
 
-@if (_recipe != null)
-{
-    <h5>@_recipe.Name</h5>
+    <h3>Recipe Details</h3>
 
-    <p>@_recipe.Description</p>
+    @if (_recipe != null)
+    {
+        <div class="row">
+            <h4 class="mt-3 mb-4">@_recipe.Name</h4>
 
-    <img src="@_recipe.ImageUrl" />
+            <p class="mb-5">@_recipe.Description</p>
 
-    <ul>
-        @foreach (var ingredient in _recipe.Ingredients!)
-        {
-            var vm = allIngredients!.First(x => x.Id == ingredient);
+            @if (@_recipe.ImageUrl != null)
+            {
+                <div class="col">
+                    <img src="@_recipe.ImageUrl" />
+                </div>
+            }
+            <div class="col">
 
-            <li class="list-group-item">@vm.Name</li>
-        }
-    </ul>
+                @if (_recipe.Ingredients != null)
+                {
+                    <h4 class="mb-3">Ingredients</h4>
 
-    <ol class="list-group list-group-numbered">
-        @foreach (var instruction in _recipe.InstructionSteps)
-        {
-            <li class="list-group-item">@instruction</li>
-        }
-    </ol>
-}
+                    <ul class="list-group list-group-flush">
+                        @foreach (var ingredient in _recipe.Ingredients!)
+                        {
+                            var vm = allIngredients!.First(x => x.Id == ingredient);
+
+                            <li class="list-group-item">@vm.Name</li>
+                        }
+                    </ul>
+                }
+
+                @if (_recipe.InstructionSteps != null)
+                {
+                    <h4 class="mt-5 mb-3">Directions</h4>
+
+                    <ol class="list-group list-group-numbered">
+                        @foreach (var instruction in _recipe.InstructionSteps)
+                        {
+                            <li class="list-group-item">@instruction</li>
+                        }
+                    </ol>
+                }
+            </div>
+        </div>
+    }
+
+</div>
 
 @code {
     private RecipeViewModel? _recipe { get; set; }
@@ -53,4 +75,3 @@
         allIngredients = response;
     }
 }
-

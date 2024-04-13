@@ -5,73 +5,77 @@
 @rendermode InteractiveWebAssembly
 
 
-
-<h3>Create A New Recipe</h3>
-<div class="card">
-    <div class="card-body">
-        <EditForm Model="Model" OnValidSubmit="Submit">
-            <DataAnnotationsValidator />
-            <ValidationSummary Model="Model" />
-            <div class="row">
-                <div class="col">
-                    <label class="form-label">@nameof(Model.Name)</label>
-                    <InputText class="form-control" @bind-Value="Model!.Name" />
-                </div>
+<div class="container">
+    <h3>Create A New Recipe</h3>
+    <EditForm Model="Model" OnValidSubmit="Submit" class="needs-validation">
+        <DataAnnotationsValidator />
+        <ValidationSummary Model="Model" />
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">@nameof(Model.Name)</label>
+                <InputText class="form-control" @bind-Value="Model!.Name" required />
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    <label class="form-label">@nameof(Model.Description)</label>
-                    <InputText class="form-control" @bind-Value="Model!.Description" />
-                </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">@nameof(Model.Description)</label>
+                <InputTextArea class="form-control" @bind-Value="Model!.Description" required />
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    <label class="form-label">@nameof(Model.ImageUrl)</label>
-                    <InputText class="form-control" @bind-Value="Model!.ImageUrl" />
-                </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">@nameof(Model.ImageUrl)</label>
+                <InputText class="form-control" @bind-Value="Model!.ImageUrl" />
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    @if (allIngredients?.Count > 0)
-                    {
-                        <label class="form-label">@nameof(Model.Ingredients)</label>
-                        <div class="list-group">
-                            @foreach(var ingredient in allIngredients)
-                            {
-                                if (selectedIngredients.Contains(ingredient.Id))
-                                {
-                                    <button type="button" class="list-group-item list-group-item-action active" @onclick="() => DeSelectIngredient(ingredient.Id)">@ingredient.Name</button>
-                                } else
-                                {
-                                    <button type="button" class="list-group-item list-group-item-action" @onclick="() => SelectIngredient(ingredient.Id)">@ingredient.Name</button>
-                                }
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <label class="form-label">@nameof(Model.InstructionSteps)</label>
-                    <InputText @bind-Value="NewInstruction"></InputText>
-                    <button type="button" class="btn btn-secondary" @onclick="AddInstruction">Add New</button>
-                    <ul class="list-group">
-                        @foreach(var instruction in Model.InstructionSteps)
+        <div class="row mb-3">
+            <div class="col">
+                @if (allIngredients?.Count > 0)
+                {
+                    <label class="form-label">@nameof(Model.Ingredients)</label>
+                    <div class="list-group">
+                        @foreach (var ingredient in allIngredients)
                         {
-                            <li class="list-group-item">@instruction</li>
+                            if (selectedIngredients.Contains(ingredient.Id))
+                            {
+                                <button type="button" class="list-group-item list-group-item-action active" @onclick="() => DeSelectIngredient(ingredient.Id)">@ingredient.Name</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="list-group-item list-group-item-action" @onclick="() => SelectIngredient(ingredient.Id)">@ingredient.Name</button>
+                            }
                         }
-                    </ul>
-                </div>
+                    </div>
+                }
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-success">Submit</button>  
-        </EditForm>
+        <div class="row mb-5 align-items-end">
+            <div class="col-md-10">
+                <label class="form-label">@nameof(Model.InstructionSteps)</label>
+                <InputText class="form-control" @bind-Value="NewInstruction"></InputText>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-secondary" @onclick="AddInstruction">Add New</button>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                <ol class="list-group list-group-numbered">
+                    @foreach (var instruction in Model.InstructionSteps)
+                    {
+                        <li class="list-group-item">@instruction</li>
+                    }
+                </ol>
+            </div>
+        </div>
 
-    </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </EditForm>
+
 </div>
 
 @code {
@@ -95,7 +99,7 @@
         var response = await _restClient.GetAsync<List<IngredientViewModel>>(request);
         allIngredients = response;
 
-        if(Id is not null)
+        if (Id is not null)
         {
             var existingRecipeRequest = new RestRequest($"/api/recipe/{Id}");
             Model = await _restClient.GetAsync<RecipeViewModel>(existingRecipeRequest);
@@ -113,7 +117,7 @@
 
     public void SelectIngredient(Guid id)
     {
-        selectedIngredients.Add(id); 
+        selectedIngredients.Add(id);
     }
 
     public void DeSelectIngredient(Guid id)
@@ -127,19 +131,20 @@
         var selectedList = selectedIngredients.ToList();
         Model!.Ingredients = allIngredients?.Where(x => selectedList.Contains(x.Id)).Select(x => x.Id).ToList();
 
-        @if(Id == null)
+        @if (Id == null)
         {
             var request = new RestRequest("/api/recipe", Method.Post);
             request.AddBody(Model!);
             await _restClient!.PostAsync(request);
-        } else
+        }
+        else
         {
             var request = new RestRequest("/api/recipe", Method.Put);
             request.AddBody(Model!);
             await _restClient!.PutAsync(request);
         }
 
-    Model = new();
+        Model = new();
         Id = null;
         Navigator.NavigateTo("recipelist");
     }
