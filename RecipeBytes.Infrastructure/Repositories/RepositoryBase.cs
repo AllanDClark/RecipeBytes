@@ -24,39 +24,56 @@ namespace RecipeBytes.Infrastructure.Repositories
 
         public async Task AddAsync(TEntity entity)
         {
+            entity.CreatedDate = DateTimeOffset.Now;
+            entity.UpdatedDate = DateTimeOffset.Now;
             await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            await SaveChangesAsync();
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
+            foreach (var entity in entities)
+            {
+                entity.CreatedDate = DateTimeOffset.Now;
+                entity.UpdatedDate = DateTimeOffset.Now;
+            }
             await _dbContext.Set<TEntity>().AddRangeAsync(entities);
-            await _dbContext.SaveChangesAsync();
+            await SaveChangesAsync();
         }
 
         public async Task RemoveAsync(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            await SaveChangesAsync();
         }
 
         public async Task RemoveAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
             await RemoveAsync(entity);
+            await SaveChangesAsync();
         }
 
         public async Task RemoveRangeAsync(IEnumerable<TEntity> entities)
         {
             _dbContext.Set<TEntity>().RemoveRange(entities);
-            await _dbContext.SaveChangesAsync();
+            await SaveChangesAsync();
         }
         #endregion
 
         public async Task SaveChangesAsync()
         {
+            AddAutoInfo();
             await _dbContext.SaveChangesAsync();
         }
 
+        private void AddAutoInfo()
+        {
+            var changedEntities = _dbContext.ChangeTracker.Entries()
+                .Where(E => E.State == EntityState.Modified)
+                .ToList();
+            foreach(var entity in changedEntities)
+                entity.Property("UpdatedDate").CurrentValue = DateTimeOffset.Now;
+        }
     }
 }
